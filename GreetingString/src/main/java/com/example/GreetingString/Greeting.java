@@ -12,17 +12,21 @@ public class Greeting {
 
     private String message;
 
-    // ✅ No-args constructor required by JPA
+
     public Greeting() {
     }
 
-    // ✅ Constructor without setting id (JPA will auto-generate it)
+
     public Greeting(String message) {
         this.message = message;
+        this.id = id;
     }
 
     public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getMessage() {
