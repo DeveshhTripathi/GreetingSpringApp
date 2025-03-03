@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/greet")
 public class GreetingControler {
+    private final GreetingService greetingService;
+
+    public GreetingControler(GreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
+
     @GetMapping("/{name}")
     public Greeting getGreet(@PathVariable String name){
         return new Greeting("Hello, "+name+"!");
