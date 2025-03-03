@@ -3,6 +3,7 @@ package com.example.GreetingString;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,5 +40,8 @@ public class GreetingService {
     public Greeting getGreetingById(Long id) {
         Optional<Greeting> greeting = greetingRepository.findById(id);
         return greeting.orElse(new Greeting("Greeting not found!"));
+    }
+    public List<Greeting> getAllGreetings() {
+        return greetingRepository.findAll();
     }
 }
