@@ -1,5 +1,7 @@
 package com.example.GreetingString;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -8,26 +10,29 @@ import org.springframework.web.bind.annotation.*;
 public class GreetingControler {
     private final GreetingService greetingService;
 
+    @Autowired
     public GreetingControler(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
 
-    @GetMapping("/{name}")
-    public Greeting getGreet(@PathVariable String name){
-        return new Greeting("Hello, "+name+"!");
+    @GetMapping
+    public Greeting getGreeting(
+            @RequestParam(value = "firstName", required = false) String firstName,
+            @RequestParam(value = "lastName", required = false) String lastName) {
+        return greetingService.getGreet(firstName, lastName);
     }
     @PostMapping("/post")
     public Greeting postGreeting(@RequestBody Greeting greeting) {
-        return new Greeting("Received: " + greeting.getMessage());
+        return greetingService.postGreet(greeting);
     }
 
-    @PutMapping("/update/{name}")
-    public Greeting putGreeting(@PathVariable String name, @RequestBody Greeting greeting) {
-        return new Greeting("Updated: " + name + " -> " + greeting.getMessage());
+    @PutMapping("/update/{firstName}")
+    public Greeting putGreeting(@PathVariable String firstName, @RequestBody Greeting greeting) {
+        return greetingService.updateGreet(firstName, greeting);
     }
 
-    @DeleteMapping("/remove/{name}")
-    public Greeting deleteGreeting(@PathVariable String name) {
-        return new Greeting("Deleted: " + name);
+    @DeleteMapping("/remove/{firstName}")
+    public Greeting deleteGreeting(@PathVariable String firstName) {
+        return greetingService.deleteGreet(firstName);
     }
 }

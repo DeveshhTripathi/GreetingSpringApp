@@ -4,19 +4,28 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GreetingService {
-    public Greeting getGreet(String name) {
-        return new Greeting("Hello, " + name + "!");
+    public Greeting getGreet(String firstName, String lastName) {
+        if (firstName != null && !firstName.isEmpty() && lastName != null && !lastName.isEmpty()) {
+            return new Greeting("Hello, " + firstName + " " + lastName + "!");
+        } else if (firstName != null && !firstName.isEmpty()) {
+            return new Greeting("Hello, " + firstName + "!");
+        } else if (lastName != null && !lastName.isEmpty()) {
+            return new Greeting("Hello, " + lastName + "!");
+        } else {
+            return new Greeting("Hello World!");
+        }
     }
 
-    public Greeting postGreeting(Greeting greeting) {
+
+    public Greeting postGreet(Greeting greeting) {
         return new Greeting("Received: " + greeting.getMessage());
     }
 
-    public Greeting putGreeting(String name, Greeting greeting) {
-        return new Greeting("Updated: " + name + " -> " + greeting.getMessage());
+    public Greeting updateGreet(String firstName, Greeting greeting) {
+        return new Greeting("Updated: " + firstName + " -> " + greeting.getMessage());
     }
 
-    public Greeting deleteGreeting(String name) {
-        return new Greeting("Deleted: " + name);
+    public Greeting deleteGreet(String firstName) {
+        return new Greeting("Deleted: " + firstName);
     }
 }
