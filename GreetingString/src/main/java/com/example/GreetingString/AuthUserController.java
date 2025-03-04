@@ -18,7 +18,7 @@ public class AuthUserController {
 
     @PostMapping("/login")
     public String loginUser(@Valid @RequestBody org.example.greetingspring.LoginDTO loginDTO) {
-        return authenticationService.loginUser  (loginDTO);
+        return authenticationService.loginUser(loginDTO);
     }
 }
 

@@ -2,7 +2,8 @@ package com.example.GreetingString;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -10,10 +11,12 @@ import java.util.Optional;
 public class AuthenticationService {
 
     @Autowired
-    AuthUserRepository authUserRepository;
+    private AuthUserRepository authUserRepository;
 
+    @Autowired
+    private JavaMailSender mailSender;
 
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthenticationService(PasswordEncoder passwordEncoder) {
@@ -36,7 +39,20 @@ public class AuthenticationService {
         newUser.setPassword(passwordEncoder.encode(authUserDTO.getPassword()));
 
         authUserRepository.save(newUser);
-        return "User registered successfully!";
+
+        // Send a welcome email
+        sendWelcomeEmail(newUser.getEmail());
+
+        return "User registered successfully! A welcome email has been sent.";
+    }
+
+    private void sendWelcomeEmail(String toEmail) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Welcome to Our Platform");
+        message.setText("Hello,\n\nThank you for registering with us! We are excited to have you onboard.\n\nBest regards,\nYour Team");
+
+        mailSender.send(message);
     }
 
     public String loginUser(org.example.greetingspring.LoginDTO loginDTO) {
@@ -47,5 +63,6 @@ public class AuthenticationService {
         throw new RuntimeException("Invalid credentials");
     }
 }
+
 
 
